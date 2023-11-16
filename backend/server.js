@@ -4,13 +4,14 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 8000;
 const db = require("./config/db");
+const routes = require("./routes");
 const cors = require("cors");
 
 // For .env access
 require("dotenv").config();
 
 // Connect to DB
-// db.connect();
+db.connect();
 
 // Check mode
 if (process.env.NODE_ENV === "dev") {
@@ -33,7 +34,7 @@ app.get("/", (req, res) => {
 });
 
 // Route
-// routes(app);
+routes(app);
 
 app.listen(port, () => {
   console.log(`App listening at port: ${port}`);
