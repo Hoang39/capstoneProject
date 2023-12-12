@@ -1,113 +1,417 @@
-import Image from 'next/image'
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
+import Header from "@/components/header/header";
+import Footer from "@/components/footer/footer";
+import Slider from "@/components/slider/slider";
+import HomeTitle from "@/components/home-component/homeTitle";
+import HomeGrid from "@/components/home-component/homeGrid";
+import HomeSlider from "@/components/home-component/homeSlider";
+import ScrollButton from "@/components/button/scrollBtn";
+import ChatBotButton from "@/components/button/chatBotBtn";
+
+import { getAllProductsByCate } from "@/app/api/productApi";
+
+import image1 from "../../public/assets/image/benefit/image1.jpg";
+import image2 from "../../public/assets/image/benefit/image2.jpg";
+import image3 from "../../public/assets/image/benefit/image3.jpg";
+import image4 from "../../public/assets/image/benefit/image4.jpg";
+import image5 from "../../public/assets/image/benefit/image5.jpg";
+
+import img1 from "../../public/assets/image/new-product/img1.png";
+import img2 from "../../public/assets/image/new-product/img2.png";
+import img3 from "../../public/assets/image/new-product/img3.png";
+import img4 from "../../public/assets/image/new-product/img4.png";
+
+import phoneImg from "../../public/assets/image/new-product/phone.jpg";
+import laptopImg from "../../public/assets/image/new-product/laptop.png";
+import watchImg from "../../public/assets/image/new-product/watchImg.png";
+import monitorImg from "../../public/assets/image/new-product/monitorImg.png";
+import tiviImg from "../../public/assets/image/new-product/tivi.jpg";
+
+import i1 from "../../public/assets/image/accessory/i1.webp";
+import i2 from "../../public/assets/image/accessory/i2.webp";
+import i3 from "../../public/assets/image/accessory/i3.webp";
+import i4 from "../../public/assets/image/accessory/i4.webp";
+import i5 from "../../public/assets/image/accessory/i5.webp";
+import i6 from "../../public/assets/image/accessory/i6.webp";
+import i7 from "../../public/assets/image/accessory/i7.webp";
+import i8 from "../../public/assets/image/accessory/i8.webp";
+import i9 from "../../public/assets/image/accessory/i9.webp";
+import i10 from "../../public/assets/image/accessory/i10.webp";
+import i11 from "../../public/assets/image/accessory/i11.webp";
+import i12 from "../../public/assets/image/accessory/i12.webp";
+import i13 from "../../public/assets/image/accessory/i13.webp";
+import i14 from "../../public/assets/image/accessory/i14.webp";
+import i15 from "../../public/assets/image/accessory/i15.webp";
+import i16 from "../../public/assets/image/accessory/i16.webp";
+import i17 from "../../public/assets/image/accessory/i17.webp";
+import i18 from "../../public/assets/image/accessory/i18.webp";
+import i19 from "../../public/assets/image/accessory/i19.webp";
+import i20 from "../../public/assets/image/accessory/i20.webp";
+
+const benefitItem = [
+  { name: "Sản phẩm", description: "CHÍNH HÃNG", img: image1 },
+  { name: "Miễn phí vận chuyển", description: "TOÀN QUỐC", img: image2 },
+  { name: "Hotline hỗ trợ", description: "1900.1000", img: image3 },
+  { name: "Thủ tục đổi trả", description: "DỄ DÀNG", img: image4 },
+];
+
+const newProductItem = [
+  { img: img1, link: "/product/samsung-galaxy-s20-fe-256gb-chinh-hang" },
+  {
+    img: img2,
+    link: "/product/macbook-air-13-inch-2020-256gb-chinh-hang-apple-viet-nam-phien-ban-moi",
+  },
+  { img: img3, link: "/product/xiaomi-redmi-13c-6gb-128gb-chinh-hang" },
+  {
+    img: img4,
+    link: "/product/laptop-asus-vivobook-14-x1404va-nk125w-chinh-hang",
+  },
+];
+
+const accessoryItem = [
+  { name: "Thẻ nhớ - USB", img: i1 },
+  { name: "Tai nghe", img: i2 },
+  { name: "Sạc dự phòng", img: i3 },
+  { name: "Quạt Mini", img: i4 },
+  { name: "Loa", img: i5 },
+  { name: "Dây đeo đồng hồ", img: i6 },
+  { name: "Củ sạc - Dây cáp", img: i7 },
+  { name: "Camera an ninh", img: i8 },
+  { name: "Apple", img: i9 },
+  { name: "Bao da - ốp lưng", img: i10 },
+  { name: "Dán màn hình", img: i11 },
+  { name: "Phụ kiện Laptop", img: i12 },
+  { name: "Camera hành trình", img: i13 },
+  { name: "Cân thông minh", img: i14 },
+  { name: "Tay cầm", img: i15 },
+  { name: "Chuột", img: i16 },
+  { name: "Bàn Phím", img: i17 },
+  { name: "Thiết bị mạng", img: i18 },
+  { name: "Máy lọc không khí", img: i19 },
+  { name: "Robot hút bụi", img: i20 },
+];
 
 export default function Home() {
+  const [phone, setPhone] = useState([]);
+  const [laptop, setLaptop] = useState([]);
+  const [service, setService] = useState([]);
+  const [watch, setWatch] = useState([]);
+  const [monitor, setMonitor] = useState([]);
+  const [tivi, setTivi] = useState([]);
+  const [tablet, setTablet] = useState([]);
+  const [speakerHead, setSpeakerHead] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const phones = await getAllProductsByCate("phone");
+      const laptops = await getAllProductsByCate("laptop");
+      const services = await getAllProductsByCate("service");
+      const watches = await getAllProductsByCate("watch");
+      const monitors = await getAllProductsByCate("monitor");
+      const tivis = await getAllProductsByCate("tivi");
+      const tablets = await getAllProductsByCate("tablet");
+      const speakerHeads = await getAllProductsByCate("speakerHeadphone");
+
+      setPhone(phones.slice(50, 75));
+      setLaptop(laptops.slice(10, 25));
+      setService(services.slice(0, 10));
+      setWatch(watches.slice(0, 10));
+      setMonitor(monitors.slice(0, 10));
+      setTivi(tivis.slice(0, 10));
+      setTablet(tablets.slice(0, 10));
+      setSpeakerHead(speakerHeads.slice(80, 120));
+    })();
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div>
+      <ScrollButton />
+      <ChatBotButton />
+
+      <Header />
+      <Slider />
+
+      {/* new product */}
+      <div className="flex justify-around items-center mx-24 space-x-2">
+        {newProductItem.map((item, index) => (
+          <Link href={item.link} key={index}>
+            <Image src={item.img} alt="" />
+          </Link>
+        ))}
+      </div>
+
+      {/* phone */}
+      <div className="mx-24 my-6 mt-16">
+        <Link href="/cate/tecno">
+          <Image src={phoneImg} alt="điện thoại nổi bật" />
+        </Link>
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Điện thoại nổi bật" href="/cate/phone" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/iphone-15-series"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              iPhone 15
+            </Link>
+            <Link
+              href="/cate/redmi-note-12-series"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              Redmi Note 12
+            </Link>
+            <Link
+              href="/cate/samsung-galaxy-s23"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              Samsung Galaxy S23
+            </Link>
+            <Link
+              href="/cate/phone"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeGrid product={phone} />
+      </div>
+
+      {/* watch */}
+      <div className="mx-24 mt-6 mt-16">
+        <Link href="/cate/tecno">
+          <Image src={watchImg} alt="đồng hồ nổi bật" />
+        </Link>
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Đồng hồ thông minh" href="/cate/watch" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/watch"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeSlider product={watch} />
+      </div>
+
+      {/* laptop */}
+      <div className="mx-24 mt-6 mt-16">
+        <Link href="/cate/msi-gaming">
+          <Image src={laptopImg} alt="laptop nổi bật" />
+        </Link>
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Laptop nổi bật" href="/cate/laptop" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/product/laptop-asus-tuf-gaming-f15-fx507zc4-hn074w-chinh-hang"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              ASUS TUF Gaming F15
+            </Link>
+            <Link
+              href="/product/laptop-msi-modern-14-c7m-221vn-chinh-hang"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              MSI Modern 14
+            </Link>
+            <Link
+              href="/product/laptop-lenovo-ideapad-3-15aba7-82sg007kvn-chinh-hang"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              Lenovo IdeaPad 5
+            </Link>
+            <Link
+              href="/product/laptop-hp-15s-fq5159tu-7c0s0pa-chinh-hang"
+              className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
+            >
+              HP 15s
+            </Link>
+            <Link
+              href="/cate/laptop"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeGrid product={laptop} />
+      </div>
+
+      {/* monitor */}
+      <div className="mx-24 mt-6 mt-16">
+        <Link href="/product/man-hinh-msi-pro-mp243x-chinh-hang">
+          <Image src={monitorImg} alt="màn hình" />
+        </Link>
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Màn hình nổi bật" href="/cate/monitor" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/monitor"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeSlider product={monitor} />
+      </div>
+
+      {/* tv */}
+      <div className="mx-24 mt-6 mt-16">
+        <Link href="/cate/tv-xiaomi">
+          <Image src={tiviImg} alt="tv" />
+        </Link>
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Smart TV nổi bật" href="/cate/tivi" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/tivi"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeSlider product={tivi} />
+      </div>
+
+      {/* tablet */}
+      <div className="mx-24 mt-6 mt-16">
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle title="Tablet" href="/cate/tablet" />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/tablet"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeSlider product={tablet} />
+      </div>
+
+      {/* speakerHead */}
+      <div className="mx-24 mt-6 mt-16">
+        <div className="flex justify-between items-center my-4">
+          <HomeTitle
+            title="Loa và tai nghe nổi bật"
+            href="/cate/speakerHeadphone"
+          />
+
+          <div className="flex justify-between space-x-2">
+            <Link
+              href="/cate/speakerHeadphone"
+              className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
+            >
+              Xem tất cả
+            </Link>
+          </div>
+        </div>
+        <HomeSlider product={speakerHead} />
+      </div>
+
+      {/* service */}
+      <div className="mx-24 mt-10 mt-16">
+        <div className="my-4">
+          <HomeTitle title="Dịch vụ sửa chữa chính hãng" href="/cate/service" />
+        </div>
+        <HomeGrid product={service} />
+      </div>
+
+      {/* accessory */}
+      <div className="mx-24 my-6 space-y-6">
+        <HomeTitle title="Phụ kiện" href="/cate/accessory" />
+
+        <div className="p-6 rounded-lg drop-shadow-lg bg-white space-y-6">
+          <div className="grid grid-cols-10 gap-y-6 place-content-between place-items-center text-center">
+            {accessoryItem.map((item, index) => (
+              <Link
+                href="/cate/accessory"
+                className="space-y-1 group"
+                key={index}
+              >
+                <Image
+                  src={item.img}
+                  alt=""
+                  className="p-5 rounded-lg bg-[#efefef] mx-auto group-hover:bg-[#fafafa] group-hover:border group-hover:border-primary_color"
+                />
+                <p className="text-primary_color text-xs group-hover:text-sub_primary_color">
+                  {item.name}
+                </p>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/* benefit */}
+      <div className="flex justify-around items-center py-4 mx-24">
+        {benefitItem.map((item, index) => (
+          <div
+            className="flex justify-around items-center space-x-2"
+            key={index}
+          >
+            <Image src={item.img} alt={item.name} />
+            <div>
+              <p className="text-xs text-primary_color font-light">
+                {item.name}
+              </p>
+              <p className="text-sm text-primary_color font-bold">
+                {item.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
+      {/* register notification */}
+      <div className="flex justify-around items-center py-8 mx-24">
+        <Image src={image5} alt="Đăng ký nhận tin" />
+        <div className="flex flex-col items-center space-y-1">
+          <p className="text-primary_color font-bold">Đăng ký nhận tin</p>
+          <p className="text-xs text-primary_color">
+            Đăng ký để nhận những chương trình khuyến mại hot nhất của E-Mobile
           </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        </div>
+        <div className="flex items-center w-1/3">
+          <input
+            type="email"
+            name="register-notification"
+            placeholder="Nhập Email của bạn"
+            className="border-2 border-white rounded-l-xl font-medium text-sm p-3 drop-shadow-xl focus:outline-none focus:text-primary_color w-full"
+          />
+          <div className="cursor-pointer drop-shadow-xl bg-primary_color hover:bg-sub_primary_color py-3 px-3 rounded-r-2xl">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
+            </svg>
+          </div>
+        </div>
       </div>
-    </main>
-  )
+
+      <Footer />
+    </div>
+  );
 }
