@@ -6,6 +6,7 @@ const port = process.env.PORT || 8000;
 const db = require("./config/db");
 const routes = require("./routes");
 const cors = require("cors");
+const errorHandleMiddlewares = require("./middlewares/errorHandleMiddlewares");
 
 // For .env access
 require("dotenv").config();
@@ -36,6 +37,10 @@ app.get("/", (req, res) => {
 // Route
 routes(app);
 
+app.use(errorHandleMiddlewares.errorHandler);
+
 app.listen(port, () => {
   console.log(`App listening at port: ${port}`);
 });
+
+require("./cron/removeChat");

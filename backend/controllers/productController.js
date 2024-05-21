@@ -24,13 +24,14 @@ class ProductController {
   getProductPhone = asyncHandler(async (req, res) => {
     const products = await Product.find({
       $or: [
-        { cate: { $elemMatch: { slug: "dien-thoai-di-dong" } } },
+        { cate: { $elemMatch: { slug: "phone" } } },
         { cate: { $elemMatch: { slug: "uu-dai-hot-dien-thoai" } } },
         { cate: { $elemMatch: { slug: "dich-vu-dien-thoai" } } },
         { cate: { $elemMatch: { slug: "dien-thoai-gap" } } },
       ],
     });
-    res.json(products);
+    if (!req.query.size) res.json(products);
+    else res.json(products.slice(0, req.query.size));
   });
 
   // [ GET : ROUTE: api/product/laptop ]
@@ -58,7 +59,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/monitor ]
   getProductMonitor = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "man-hinh" } },
+      cate: { $elemMatch: { slug: "monitor" } },
     });
     res.json(products);
   });
@@ -66,7 +67,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/tivi ]
   getProductTivi = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "smart-tv" } },
+      cate: { $elemMatch: { slug: "tivi" } },
     });
     res.json(products);
   });
@@ -74,7 +75,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/watch ]
   getProductWatch = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "dong-ho" } },
+      cate: { $elemMatch: { slug: "watch" } },
     });
     res.json(products);
   });
@@ -82,7 +83,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/speakHead ]
   getProductSpeakerHead = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "loa-tai-nghe" } },
+      cate: { $elemMatch: { slug: "speakerHeadphone" } },
     });
     res.json(products);
   });
@@ -90,7 +91,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/oldProduct ]
   getProductOldProduct = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "kho-san-pham-cu" } },
+      cate: { $elemMatch: { slug: "oldProduct" } },
     });
     res.json(products);
   });
@@ -98,7 +99,7 @@ class ProductController {
   // [ GET : ROUTE: api/product/service ]
   getProductService = asyncHandler(async (req, res) => {
     const products = await Product.find({
-      cate: { $elemMatch: { slug: "dich-vu-sua-chua" } },
+      cate: { $elemMatch: { slug: "service" } },
     });
     res.json(products);
   });
@@ -107,7 +108,7 @@ class ProductController {
   getProductAccessory = asyncHandler(async (req, res) => {
     const products = await Product.find({
       $or: [
-        { cate: { $elemMatch: { slug: "phu-kien" } } },
+        { cate: { $elemMatch: { slug: "accessory" } } },
         { cate: { $elemMatch: { slug: "phu-kien-loa-tai-nghe" } } },
         { cate: { $elemMatch: { slug: "smart-home" } } },
         { cate: { $elemMatch: { slug: "do-choi-cong-nghe" } } },
@@ -121,6 +122,92 @@ class ProductController {
   getAllCates = asyncHandler(async (req, res) => {
     const cates = await Cate.find({});
     res.json(cates);
+  });
+
+  // [ GET : ROUTE: api/product/cateArr ]
+  getAllCatesArray = asyncHandler(async (req, res) => {
+    let cates = await Cate.find({}).lean();
+    cates[0].phone.forEach(function (e) {
+      e.bigSlug = "phone";
+    });
+    cates[0].laptop.forEach(function (e) {
+      e.bigSlug = "laptop";
+    });
+    cates[0].tablet.forEach(function (e) {
+      e.bigSlug = "tablet";
+    });
+    cates[0].monitor.forEach(function (e) {
+      e.bigSlug = "monitor";
+    });
+    cates[0].tivi.forEach(function (e) {
+      e.bigSlug = "tivi";
+    });
+    cates[0].speakerHeadphone.forEach(function (e) {
+      e.bigSlug = "speakerHeadphone";
+    });
+    cates[0].oldProduct.forEach(function (e) {
+      e.bigSlug = "oldProduct";
+    });
+    cates[0].service.forEach(function (e) {
+      e.bigSlug = "service";
+    });
+    cates[0].accessory.forEach(function (e) {
+      e.bigSlug = "accessory";
+    });
+    cates[0].watch.forEach(function (e) {
+      e.bigSlug = "watch";
+    });
+    const ans = [
+      ...cates[0].phone,
+      ...cates[0].laptop,
+      ...cates[0].tablet,
+      ...cates[0].monitor,
+      ...cates[0].tivi,
+      ...cates[0].watch,
+      ...cates[0].speakerHeadphone,
+      ...cates[0].oldProduct,
+      ...cates[0].service,
+      ...cates[0].accessory,
+    ];
+    res.json(ans);
+  });
+
+  //  [ GET - ROUTE: api/dish/:id ]
+  getProductByID = asyncHandler(async (req, res) => {
+    var product = await Product.findById(req.params.id);
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404);
+      throw new Error("Product does not exist!");
+    }
+  });
+
+  //  [ PATCH - ROUTE: api/dish/:id ]
+  updateProduct = asyncHandler(async (req, res) => {
+    var pro = await Product.findById(req.params.id);
+    if (pro) {
+      var newPro = await Product.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          name: req.body.name || pro.name,
+          price: req.body.price || pro.price,
+          image: req.body.image || pro.image,
+          offer: req.body.offer || pro.offer,
+          configTitle: req.body.configTitle || pro.configTitle,
+          configImage: req.body.configImage || pro.configImage,
+          configDesc: req.body.configDesc || pro.configDesc,
+          description: req.body.description || pro.description,
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(newPro);
+    } else {
+      res.status(404);
+      throw new Error("Product does not exist");
+    }
   });
 }
 
