@@ -61,3 +61,15 @@ export const getProductBySlug = async (slug) => {
     return error.response.data;
   }
 };
+
+export const getProductById = async (id) => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${host}/api/product/id/${id}`,
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

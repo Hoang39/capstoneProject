@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import img1 from "../../../public/assets/image/footer/img1.jpg";
-import img2 from "../../../public/assets/image/footer/img2.jpg";
+import img1 from "../../../src/image/footer/img1.jpg";
+import img2 from "../../../src/image/footer/img2.jpg";
 
 const Footer = () => {
   return (

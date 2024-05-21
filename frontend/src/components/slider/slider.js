@@ -7,11 +7,11 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./slider.css";
 
-import slider1 from "../../../public/assets/image/slider/slider1.jpg";
-import slider2 from "../../../public/assets/image/slider/slider2.jpg";
-import slider3 from "../../../public/assets/image/slider/slider3.jpg";
-import slider4 from "../../../public/assets/image/slider/slider4.jpg";
-import slider5 from "../../../public/assets/image/slider/slider5.jpg";
+import slider1 from "../../../src/image/slider/slider1.jpg";
+import slider2 from "../../../src/image/slider/slider2.jpg";
+import slider3 from "../../../src/image/slider/slider3.jpg";
+import slider4 from "../../../src/image/slider/slider4.jpg";
+import slider5 from "../../../src/image/slider/slider5.jpg";
 
 const sliderItem = [
   {
@@ -151,7 +151,7 @@ const Slider = () => {
             className="keen-slider__slide flex flex-col items-center py-3 rounded-lg bg-white drop-shadow-lg"
             key={index}
           >
-            <p className="text-sm text-sub_primary_color font-semibold keen-slider__name">
+            <p className="text-sm text-center text-sub_primary_color font-semibold keen-slider__name">
               {item.name}
             </p>
             <p className="text-xs text-sub_primary_color font-light keen-slider__description">

@@ -29,7 +29,7 @@ export default function Product() {
   }, []);
 
   return (
-    <div>
+    <>
       <ScrollButton />
       <ChatBotButton />
 
@@ -228,6 +228,6 @@ export default function Product() {
       <Benefit />
 
       <Footer />
-    </div>
+    </>
   );
 }

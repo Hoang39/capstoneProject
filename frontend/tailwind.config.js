@@ -6,6 +6,17 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontSize: {
+      xs: "0.7rem",
+      sm: "0.8rem",
+      base: "1rem",
+      lg: "1.1rem",
+      xl: "1.2rem",
+      "2xl": "1.4rem",
+      "3xl": "1.6rem",
+      "4xl": "1.8rem",
+      "5xl": "2rem",
+    },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

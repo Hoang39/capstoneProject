@@ -1,0 +1,61 @@
+import axios from "axios";
+
+const host = "http://localhost:8000";
+
+export const signIn = async (formValue) => {
+  try {
+    const res = await axios({
+      method: "post",
+      url: `${host}/api/user/auth`,
+      data: formValue,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const signUp = async (formValue) => {
+  try {
+    const res = await axios({
+      method: "post",
+      url: `${host}/api/user/register`,
+      data: formValue,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const getProfile = async (token) => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${host}/api/user`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const updateProfile = async (token, formValue) => {
+  try {
+    const res = await axios({
+      method: "patch",
+      url: `${host}/api/user/update`,
+      data: formValue,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

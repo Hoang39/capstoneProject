@@ -1,57 +1,58 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-import Header from "@/components/header/header";
+import ChatBotButton from "@/components/button/chatBotBtn";
+import ScrollButton from "@/components/button/scrollBtn";
 import Footer from "@/components/footer/footer";
-import Slider from "@/components/slider/slider";
-import HomeTitle from "@/components/home-component/homeTitle";
+import Header from "@/components/header/header";
 import HomeGrid from "@/components/home-component/homeGrid";
 import HomeSlider from "@/components/home-component/homeSlider";
-import ScrollButton from "@/components/button/scrollBtn";
-import ChatBotButton from "@/components/button/chatBotBtn";
+import HomeTitle from "@/components/home-component/homeTitle";
+import Slider from "@/components/slider/slider";
 
 import { getAllProductsByCate } from "@/app/api/productApi";
 
-import image1 from "../../public/assets/image/benefit/image1.jpg";
-import image2 from "../../public/assets/image/benefit/image2.jpg";
-import image3 from "../../public/assets/image/benefit/image3.jpg";
-import image4 from "../../public/assets/image/benefit/image4.jpg";
-import image5 from "../../public/assets/image/benefit/image5.jpg";
+import image1 from "../../src/image/benefit/image1.jpg";
+import image2 from "../../src/image/benefit/image2.jpg";
+import image3 from "../../src/image/benefit/image3.jpg";
+import image4 from "../../src/image/benefit/image4.jpg";
+import image5 from "../../src/image/benefit/image5.jpg";
 
-import img1 from "../../public/assets/image/new-product/img1.png";
-import img2 from "../../public/assets/image/new-product/img2.png";
-import img3 from "../../public/assets/image/new-product/img3.png";
-import img4 from "../../public/assets/image/new-product/img4.png";
+import img1 from "../../src/image/new-product/img1.png";
+import img2 from "../../src/image/new-product/img2.png";
+import img3 from "../../src/image/new-product/img3.png";
+import img4 from "../../src/image/new-product/img4.png";
 
-import phoneImg from "../../public/assets/image/new-product/phone.jpg";
-import laptopImg from "../../public/assets/image/new-product/laptop.png";
-import watchImg from "../../public/assets/image/new-product/watchImg.png";
-import monitorImg from "../../public/assets/image/new-product/monitorImg.png";
-import tiviImg from "../../public/assets/image/new-product/tivi.jpg";
+import laptopImg from "../../src/image/new-product/laptop.png";
+import monitorImg from "../../src/image/new-product/monitorImg.png";
+import phoneImg from "../../src/image/new-product/phone.jpg";
+import tiviImg from "../../src/image/new-product/tivi.jpg";
+import watchImg from "../../src/image/new-product/watchImg.png";
 
-import i1 from "../../public/assets/image/accessory/i1.webp";
-import i2 from "../../public/assets/image/accessory/i2.webp";
-import i3 from "../../public/assets/image/accessory/i3.webp";
-import i4 from "../../public/assets/image/accessory/i4.webp";
-import i5 from "../../public/assets/image/accessory/i5.webp";
-import i6 from "../../public/assets/image/accessory/i6.webp";
-import i7 from "../../public/assets/image/accessory/i7.webp";
-import i8 from "../../public/assets/image/accessory/i8.webp";
-import i9 from "../../public/assets/image/accessory/i9.webp";
-import i10 from "../../public/assets/image/accessory/i10.webp";
-import i11 from "../../public/assets/image/accessory/i11.webp";
-import i12 from "../../public/assets/image/accessory/i12.webp";
-import i13 from "../../public/assets/image/accessory/i13.webp";
-import i14 from "../../public/assets/image/accessory/i14.webp";
-import i15 from "../../public/assets/image/accessory/i15.webp";
-import i16 from "../../public/assets/image/accessory/i16.webp";
-import i17 from "../../public/assets/image/accessory/i17.webp";
-import i18 from "../../public/assets/image/accessory/i18.webp";
-import i19 from "../../public/assets/image/accessory/i19.webp";
-import i20 from "../../public/assets/image/accessory/i20.webp";
+import i1 from "../../src/image/accessory/i1.webp";
+import i10 from "../../src/image/accessory/i10.webp";
+import i11 from "../../src/image/accessory/i11.webp";
+import i12 from "../../src/image/accessory/i12.webp";
+import i13 from "../../src/image/accessory/i13.webp";
+import i14 from "../../src/image/accessory/i14.webp";
+import i15 from "../../src/image/accessory/i15.webp";
+import i16 from "../../src/image/accessory/i16.webp";
+import i17 from "../../src/image/accessory/i17.webp";
+import i18 from "../../src/image/accessory/i18.webp";
+import i19 from "../../src/image/accessory/i19.webp";
+import i2 from "../../src/image/accessory/i2.webp";
+import i20 from "../../src/image/accessory/i20.webp";
+import i3 from "../../src/image/accessory/i3.webp";
+import i4 from "../../src/image/accessory/i4.webp";
+import i5 from "../../src/image/accessory/i5.webp";
+import i6 from "../../src/image/accessory/i6.webp";
+import i7 from "../../src/image/accessory/i7.webp";
+import i8 from "../../src/image/accessory/i8.webp";
+import i9 from "../../src/image/accessory/i9.webp";
+import { getProfile } from "./api/userApi";
 
 const benefitItem = [
   { name: "Sản phẩm", description: "CHÍNH HÃNG", img: image1 },
@@ -106,8 +107,16 @@ export default function Home() {
   const [tablet, setTablet] = useState([]);
   const [speakerHead, setSpeakerHead] = useState([]);
 
+  const [userInfo, setUserInfo] = useState(null);
+
   useEffect(() => {
     (async () => {
+      const token = localStorage.getItem("user-token");
+      if (token) {
+        const getUserInfo = await getProfile(token);
+        setUserInfo(getUserInfo);
+      }
+
       const phones = await getAllProductsByCate("phone");
       const laptops = await getAllProductsByCate("laptop");
       const services = await getAllProductsByCate("service");
@@ -129,7 +138,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <>
       <ScrollButton />
       <ChatBotButton />
 
@@ -349,7 +358,7 @@ export default function Home() {
                   alt=""
                   className="p-5 rounded-lg bg-[#efefef] mx-auto group-hover:bg-[#fafafa] group-hover:border group-hover:border-primary_color"
                 />
-                <p className="text-primary_color text-xs group-hover:text-sub_primary_color">
+                <p className="text-primary_color text-xs group-hover:text-sub_primary_color line-clamp-1">
                   {item.name}
                 </p>
               </Link>
@@ -412,6 +421,6 @@ export default function Home() {
       </div>
 
       <Footer />
-    </div>
+    </>
   );
 }

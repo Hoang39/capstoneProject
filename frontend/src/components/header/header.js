@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 
 import { getAllCates } from "@/app/api/productApi";
 
-import logo from "../../../public/assets/image/logo/logo.png";
+import logo from "../../../src/image/logo/logo.png";
+import { getProfile } from "@/app/api/userApi";
+import { useRouter } from "next/navigation";
 
 const headerItem = [
   {
@@ -230,8 +232,17 @@ const viewCate = (cateArr, path) => {
 const Header = () => {
   const [cateList, setCateList] = useState({});
 
+  const [userInfo, setUserInfo] = useState(null);
+  const router = useRouter();
+
   useEffect(() => {
     (async () => {
+      const token = localStorage.getItem("user-token");
+      if (token) {
+        const getUserInfo = await getProfile(token);
+        setUserInfo(getUserInfo);
+      }
+
       const res = await getAllCates();
       setCateList(res[0]);
     })();
@@ -250,12 +261,12 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center mx-24 py-6">
+      <div className="flex justify-between items-center mx-24 py-4">
         <Link href="/">
           <Image src={logo} alt="E-Mobile Shop" />
         </Link>
 
-        <div className="w-[55%] relative">
+        <div className="w-[45%] relative">
           <input
             type="text"
             name="search"
@@ -281,7 +292,12 @@ const Header = () => {
         </div>
 
         <div className="flex">
-          <div className="flex items-center rounded-lg bg-primary_color p-2 space-x-2 border-2 border-primary_color mr-4">
+          <div
+            onClick={() => {
+              userInfo ? router.push("/cart") : router.push("/login");
+            }}
+            className="cursor-pointer w-28 flex items-center rounded-lg bg-primary_color p-2 space-x-2 border-2 border-primary_color mr-4"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -296,9 +312,12 @@ const Header = () => {
               <circle cx="18" cy="20.5" r="1" />
               <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1" />
             </svg>
-            <p className="text-sm font-medium">Giỏ hàng</p>
+            <p className="text-xs font-medium">Giỏ hàng</p>
           </div>
-          <div className="flex items-center rounded-lg bg-white p-2 space-x-2 border-2 border-primary_color">
+          <Link
+            href={userInfo ? "/profile" : "/login"}
+            className="w-28 flex items-center rounded-lg bg-white p-2 space-x-2 border-2 border-primary_color"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -312,8 +331,10 @@ const Header = () => {
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <p className="text-sm font-medium text-primary_color">Đăng nhập</p>
-          </div>
+            <p className="text-xs font-medium text-primary_color line-clamp-1">
+              {userInfo ? userInfo?.name?.split(" ").pop() : "Đăng nhập"}
+            </p>
+          </Link>
         </div>
       </div>
 
@@ -326,13 +347,13 @@ const Header = () => {
             key={index}
           >
             {item.icon}
-            <p className="px-6 text-xs font-medium group-hover:font-semibold group-hover:underline group-hover:underline-offset-2 group-hover:decoration-4 group-hover:decoration-[#f7941e]">
+            <p className="px-2 text-xs font-medium group-hover:font-semibold group-hover:underline group-hover:underline-offset-2 group-hover:decoration-4 group-hover:decoration-[#f7941e]">
               {item.name.toUpperCase()}
             </p>
 
             <div className="absolute hidden group-hover:block left-0 top-14 w-full z-50">
               <div className="drop-shadow-2xl rounded p-3 my-1 bg-white">
-                {Object.keys(cateList).length
+                {Object.keys(cateList ?? {}).length
                   ? viewCate(cateList[item.link], item.link)
                   : null}
               </div>

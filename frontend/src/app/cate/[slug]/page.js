@@ -108,7 +108,7 @@ export default function Cate() {
   }, [_sort, _filter]);
 
   return (
-    <div>
+    <>
       <ScrollButton />
       <ChatBotButton />
 
@@ -168,6 +168,6 @@ export default function Cate() {
       <Benefit />
 
       <Footer />
-    </div>
+    </>
   );
 }

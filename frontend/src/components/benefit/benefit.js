@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import image1 from "../../../public/assets/image/benefit/image1.jpg";
-import image2 from "../../../public/assets/image/benefit/image2.jpg";
-import image3 from "../../../public/assets/image/benefit/image3.jpg";
-import image4 from "../../../public/assets/image/benefit/image4.jpg";
+import image1 from "../../../src/image/benefit/image1.jpg";
+import image2 from "../../../src/image/benefit/image2.jpg";
+import image3 from "../../../src/image/benefit/image3.jpg";
+import image4 from "../../../src/image/benefit/image4.jpg";
 
 const benefitItem = [
   { name: "Sản phẩm", description: "CHÍNH HÃNG", img: image1 },
