@@ -30,6 +30,7 @@ class UserController {
           name,
           email,
           name,
+          color,
           phoneNumber,
           gender,
           newUser: newUser.roleUser,

@@ -10,11 +10,11 @@ class CartController {
 
   //  [ PATCH - ROUTE: api/cart/update]
   updateCart = asyncHandler(async (req, res) => {
-    const orderList = req.body;
+    const orderList = req.body.orderList;
     const updatedCart = await Cart.findOneAndUpdate(
       { user: req.user._id },
       {
-        orderList,
+        orderList: JSON.parse(orderList)
       },
       {
         new: true,

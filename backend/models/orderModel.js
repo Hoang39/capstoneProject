@@ -26,8 +26,13 @@ const orderModel = new Schema(
           required: true,
           default: "",
         },
+        color: {
+          type: String,
+          required: true,
+          default: "",
+        },
         price: {
-          type: Number,
+          type: String,
           required: true,
           default: 0,
         },
@@ -35,7 +40,6 @@ const orderModel = new Schema(
           type: Number,
           required: true,
         },
-        default: [],
       },
     ],
     shippingAddress: {
