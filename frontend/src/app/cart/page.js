@@ -16,16 +16,19 @@ export default function Cart() {
   const router = useRouter();
 
   const [userInfo, setUserInfo] = useState(null);
-  const { listCart, addCart, removeCart, fetchCart } = useCart();
-
+  const { listCart, updateQuantity, removeCart, fetchCart } = useCart();
+  const [payment, setPayment] = useState("");
+  const [token, setToken] = useState("");
+  
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      if (token) {
-        const getUserInfo = await getProfile(token);
+      const userToken = localStorage.getItem("user-token");
+      if (userToken) {
+        setToken(userToken);
+        const getUserInfo = await getProfile(userToken);
         setUserInfo(getUserInfo);
 
-        fetchCart(token);
+        fetchCart(userToken);
       }
     })();
   }, []);
@@ -37,13 +40,13 @@ export default function Cart() {
 
       <Header />
 
-      <p className="font-bold text-primary_color text-lg font-bold text-center mt-4">
+      <p className="font-bold text-primary_color text-lg text-center mt-4">
         GIỎ HÀNG
       </p>
 
       {listCart && listCart?.length ? (
-        <div className="my-8 mx-20 flex flex-col items-center">
-          <div className="overflow-y-auto h-160 flex flex-col gap-4 gap-y-6 mt-8">
+        <div className="my-2 mx-20 flex flex-col items-center">
+          <div className="overflow-y-auto h-160 flex flex-col gap-4">
             {listCart?.map((item, index) => (
               <div
                 key={index}
@@ -52,14 +55,13 @@ export default function Cart() {
                 <div className="flex flex-row gap-x-2 items-center">
                   <svg
                     onClick={() => {
-                      dltItem(item);
-                      setLoad(!load);
+                      removeCart(item?.productId, item?.color, token);
                     }}
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
-                    stroke="currentColor"
+                    stroke="black"
                     className="cursor-pointer w-6 h-6"
                   >
                     <path
@@ -70,22 +72,31 @@ export default function Cart() {
                   </svg>
                   <img
                     className="w-32 h-32 rounded-lg"
-                    src={item.imageUrl}
+                    src={item?.image}
                     alt="list"
                   />
                   <div className="flex flex-col gap-y-2 min-w-[320px]">
-                    <p className="text-lg">{item.name}</p>
-                    <p className="text-lg">
-                      {item.quantitySell * item.unitPrice} VND
+                    <p className="text-primary_color">{item?.name}</p>
+                    <p className="text-sm text-primary_color">
+                      {(
+                        item?.price?.replace(/,/g, "") * item.quantity
+                      ).toLocaleString("en-US", {
+                        minimumFractionDigits: 0, 
+                        maximumFractionDigits: 0, 
+                      })}{" "}
+                      đ
+                    </p>
+                    <p className="text-sm text-primary_color">
+                      Màu: {item?.color}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row gap-x-2 items-center">
+                <div className="flex flex-row gap-x-2 items-center ml-4">
                   <button
                     onClick={() => {
-                      item.quantitySell -= 1;
-                      if (item.quantitySell < 1) item.quantitySell = 1;
-                      setLoad(!load);
+                      if (item.quantity > 1) {
+                        updateQuantity(item?.productId, item?.color, item.quantity-1, token);
+                      }
                     }}
                   >
                     <svg
@@ -93,7 +104,7 @@ export default function Cart() {
                       className="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      stroke="black"
                     >
                       <path
                         strokeLinecap="round"
@@ -103,13 +114,12 @@ export default function Cart() {
                       />
                     </svg>
                   </button>
-                  <div className="m-auto rounded-2xl px-2">
-                    {item.quantitySell}
+                  <div className="m-auto rounded-2xl px-2 text-primary_color">
+                    {item.quantity}
                   </div>
                   <button
                     onClick={() => {
-                      item.quantitySell = parseInt(item.quantitySell) + 1;
-                      setLoad(!load);
+                      updateQuantity(item?.productId, item?.color, item.quantity+1, token);
                     }}
                   >
                     <svg
@@ -117,7 +127,7 @@ export default function Cart() {
                       className="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      stroke="black"
                     >
                       <path
                         strokeLinecap="round"
@@ -132,7 +142,9 @@ export default function Cart() {
             ))}
           </div>
           <div className="flex flex-row gap-4 py-4">
-            <p className="font-bold text-lg">Phương thức thanh toán:</p>
+            <p className="font-semibold text-lg text-primary_color">
+              Phương thức thanh toán:
+            </p>
             <input
               onChange={() => setPayment("Momo")}
               type="radio"
@@ -140,7 +152,10 @@ export default function Cart() {
               name="fav_language"
               value="Momo"
             />
-            <label className="text-lg font-bold" htmlFor="Momo">
+            <label
+              className="text-lg font-semibold text-primary_color"
+              htmlFor="Momo"
+            >
               Momo
             </label>
             <br></br>
@@ -152,14 +167,17 @@ export default function Cart() {
               name="fav_language"
               value="direct"
             />
-            <label className="text-lg font-bold" htmlFor="direct">
+            <label
+              className="text-lg font-semibold text-primary_color"
+              htmlFor="direct"
+            >
               Trực tiếp
             </label>
             <br></br>
           </div>
 
           <button
-            onClick={handleCart}
+            // onClick={handleCart}
             className="text-white font-semibold bg-primary_color w-1/2 rounded-xl py-2 px-4"
           >
             Đặt hàng ngay

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import Header from "@/components/header/header";
 import Footer from "@/components/footer/footer";
@@ -14,12 +15,18 @@ import HomeGrid from "@/components/home-component/homeGrid";
 import Benefit from "@/components/benefit/benefit";
 import NavProd from "@/components/product-component/navProd";
 import ProductSlider from "@/components/product-component/productSlider";
+import { ReactNotifications, Store } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import { useCart } from "@/hooks/useCart";
 
 import { getProductBySlug } from "@/app/api/productApi";
 
 export default function Product() {
   const productSlug = usePathname().split("/")[2];
   const [product, setProduct] = useState(null);
+  const [colorPicker, setColorPicker] = useState(null);
+  const { listCart, addCart, removeCart, fetchCart } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -28,8 +35,58 @@ export default function Product() {
     })();
   }, []);
 
+  const handleCart = async () => {
+    const token = localStorage.getItem("user-token");
+    if (!token) {
+      router.push("/");
+    } else {
+      if (colorPicker) {
+        addCart(
+          {
+            productId: product?._id,
+            name: product?.name,
+            image: product?.image?.[0] ?? "",
+            color: colorPicker,
+            price: product?.price,
+            quantity: 1,
+          },
+          token
+        );
+        console.log("===> cart: ", listCart);
+        Store.addNotification({
+          title: "Thành công",
+          message: "Đã thêm sản phẩm vào giỏ hàng",
+          type: "success",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 3000,
+            onScreen: true,
+          },
+        });
+      } else {
+        Store.addNotification({
+          title: "Lỗi",
+          message: "Vui lòng chọn màu/phiên bản mua",
+          type: "danger",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 3000,
+            onScreen: true,
+          },
+        });
+      }
+    }
+  };
+
   return (
     <>
+      <ReactNotifications />
       <ScrollButton />
       <ChatBotButton />
 
@@ -76,7 +133,12 @@ export default function Product() {
                     key={index}
                   >
                     <div className="flex items-center gap-x-2">
-                      <input type="radio" name="color" value={item} />
+                      <input
+                        type="radio"
+                        name="color"
+                        value={item}
+                        onChange={(e) => setColorPicker(e?.target?.value)}
+                      />
                       <p className="text-sm text-primary_color">{item}</p>
                     </div>
                     <p className="text-sm text-[#fd475a] font-bold">
@@ -85,7 +147,10 @@ export default function Product() {
                   </div>
                 ))}
             </div>
-            <div className="cursor-pointer py-2 bg-gradient-to-t hover:bg-gradient-to-b from-primary_color to-sub_primary_color rounded font-bold text-center">
+            <div
+              onClick={handleCart}
+              className="cursor-pointer py-2 bg-gradient-to-t hover:bg-gradient-to-b from-primary_color to-sub_primary_color rounded font-bold text-center"
+            >
               MUA NGAY
             </div>
 
@@ -160,7 +225,7 @@ export default function Product() {
 
       {/* description */}
       <div className="mx-24 my-8">
-        <div className="bg-white rounded py-4 px-4">
+        <div className="bg-white rounded py-4 px-4 text-sm">
           {product &&
             product.description &&
             product.description.map(function (item, index) {

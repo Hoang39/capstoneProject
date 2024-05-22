@@ -23,7 +23,7 @@ const BotMessage = ({ message }) => {
   const [productObj, setProductObj] = useState(null);
   const [messageObj, setMessageObj] = useState(null);
   const router = useRouter();
-
+  
   useEffect(() => {
     (async () => {
       const messages = handleMessage(message?.content);
@@ -45,10 +45,10 @@ const BotMessage = ({ message }) => {
         <p className="text-xs text-[#667085] whitespace-pre-line">
           {messageObj?.message}
         </p>
-        {messageObj?.id ? (
+        {messageObj?.id && productObj?.image?.[0] ? (
           <>
             <Image
-              src={productObj?.image[0]}
+              src={productObj?.image?.[0]}
               alt=""
               width={80}
               height={80}
