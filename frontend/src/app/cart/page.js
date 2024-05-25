@@ -7,7 +7,10 @@ import Header from "@/components/header/header";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/userApi";
+import { ReactNotifications, Store } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { useCart } from "@/hooks/useCart";
+import { createOrder } from "../api/orderApi";
 import Image from "next/image";
 
 import wishlist from "../../image/cart/wishlist.png";
@@ -16,10 +19,10 @@ export default function Cart() {
   const router = useRouter();
 
   const [userInfo, setUserInfo] = useState(null);
-  const { listCart, updateQuantity, removeCart, fetchCart } = useCart();
+  const { listCart, updateQuantity, removeCart, fetchCart, resetCart } = useCart();
   const [payment, setPayment] = useState("");
   const [token, setToken] = useState("");
-  
+
   useEffect(() => {
     (async () => {
       const userToken = localStorage.getItem("user-token");
@@ -33,8 +36,66 @@ export default function Cart() {
     })();
   }, []);
 
+  const handleCart = async () => {
+    if (payment) {
+      const res = await createOrder(token, {
+        orderList: JSON.stringify(listCart),
+        paymentMethod: payment,
+        price: listCart?.reduce((accumulator, current) => {
+          const priceNumber = parseFloat(current.price.replace(/,/g, ""));
+          return accumulator + (priceNumber * current.quantity);
+        }, 0),
+      });
+
+      await resetCart(token);
+      router.push("/profile")
+
+      Store.addNotification({
+        title: "Thành công",
+        message: "Xác nhận đặt hàng thành công",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true,
+        },
+      });
+      Store.addNotification({
+        title: "Theo dõi",
+        message: "Vào trang cá nhân để xem thông tin đơn hàng",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true,
+        },
+      });
+    } else {
+      Store.addNotification({
+        title: "Lỗi",
+        message: "Vui lòng chọn phương thức thanh toán",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true,
+        },
+      });
+    }
+  };
+
   return (
     <>
+      <ReactNotifications />
       <ScrollButton />
       <ChatBotButton />
 
@@ -81,8 +142,8 @@ export default function Cart() {
                       {(
                         item?.price?.replace(/,/g, "") * item.quantity
                       ).toLocaleString("en-US", {
-                        minimumFractionDigits: 0, 
-                        maximumFractionDigits: 0, 
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
                       })}{" "}
                       đ
                     </p>
@@ -95,7 +156,12 @@ export default function Cart() {
                   <button
                     onClick={() => {
                       if (item.quantity > 1) {
-                        updateQuantity(item?.productId, item?.color, item.quantity-1, token);
+                        updateQuantity(
+                          item?.productId,
+                          item?.color,
+                          item.quantity - 1,
+                          token
+                        );
                       }
                     }}
                   >
@@ -119,7 +185,12 @@ export default function Cart() {
                   </div>
                   <button
                     onClick={() => {
-                      updateQuantity(item?.productId, item?.color, item.quantity+1, token);
+                      updateQuantity(
+                        item?.productId,
+                        item?.color,
+                        item.quantity + 1,
+                        token
+                      );
                     }}
                   >
                     <svg
@@ -153,7 +224,7 @@ export default function Cart() {
               value="Momo"
             />
             <label
-              className="text-lg font-semibold text-primary_color"
+              className="cursor-pointer text-lg font-semibold text-primary_color"
               htmlFor="Momo"
             >
               Momo
@@ -168,7 +239,7 @@ export default function Cart() {
               value="direct"
             />
             <label
-              className="text-lg font-semibold text-primary_color"
+              className="cursor-pointer text-lg font-semibold text-primary_color"
               htmlFor="direct"
             >
               Trực tiếp
@@ -177,7 +248,7 @@ export default function Cart() {
           </div>
 
           <button
-            // onClick={handleCart}
+            onClick={handleCart}
             className="text-white font-semibold bg-primary_color w-1/2 rounded-xl py-2 px-4"
           >
             Đặt hàng ngay

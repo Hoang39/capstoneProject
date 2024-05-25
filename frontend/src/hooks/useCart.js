@@ -42,6 +42,10 @@ export const useCart = create((set) => ({
     );
     set({ listCart: newCart });
   },
+  resetCart: async (token) => {
+    const newCart = await updateCart(token, []);
+    set({ listCart: [] });
+  },
   fetchCart: async (token) => {
     const res = await getCart(token);
     set({ listCart: res });
