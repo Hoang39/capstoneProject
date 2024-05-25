@@ -3,18 +3,22 @@ const Order = require("../models/orderModel.js");
 const asyncHandler = require("express-async-handler");
 
 class OrderController {
-  //  [ POST - ROUTE: api/order]
+  //  [ GET - ROUTE: api/order/]
+  getOrder = asyncHandler(async (req, res) => {
+    const order = await Order.findOne({ user: req.user._id });
+    res.json(order);
+  });
+
+  //  [ POST - ROUTE: api/order/create]
   createOrder = asyncHandler(async (req, res) => {
-    const { orderList, shippingAddress, paymentMethod, totalPrice } = req.body;
+    const { orderList, paymentMethod, price } = req.body;
 
     const newOrder = await Order.create({
       user: req.user._id,
-      orderList,
-      shippingAddress,
+      orderList: JSON.parse(orderList),
       paymentMethod,
       paymentStatus: "pending",
-      shippingPrice,
-      totalPrice,
+      price,
     });
     res.json(newOrder);
   });

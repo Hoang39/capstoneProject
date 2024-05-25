@@ -9,6 +9,7 @@ router.patch(
   authMiddlewares.isAdmin,
   orderController.updateStatus
 );
-router.post("/", authMiddlewares.protect, orderController.createOrder);
+router.post("/create", authMiddlewares.protect, orderController.createOrder);
+router.post("/", authMiddlewares.protect, orderController.getOrder);
 
 module.exports = router;

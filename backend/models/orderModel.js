@@ -42,10 +42,6 @@ const orderModel = new Schema(
         },
       },
     ],
-    shippingAddress: {
-      type: String,
-      required: true,
-    },
     paymentMethod: {
       type: String,
       required: true,
@@ -53,9 +49,9 @@ const orderModel = new Schema(
     paymentStatus: {
       type: String,
       required: true,
-      default: "Pending",
+      default: "pending",
     },
-    totalPrice: {
+    price: {
       type: Number,
       required: true,
       default: 0,
