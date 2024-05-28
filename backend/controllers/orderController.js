@@ -5,7 +5,13 @@ const asyncHandler = require("express-async-handler");
 class OrderController {
   //  [ GET - ROUTE: api/order/]
   getOrder = asyncHandler(async (req, res) => {
-    const order = await Order.findOne({ user: req.user._id });
+    const order = await Order.find({ user: req.user._id });
+    res.json(order);
+  });
+
+  //  [ GET - ROUTE: api/order/all]
+  getAllOrder = asyncHandler(async (req, res) => {
+    const order = await Order.find({});
     res.json(order);
   });
 
@@ -25,10 +31,10 @@ class OrderController {
 
   //  [ PATCH - ROUTE: api/order/:id]
   updateStatus = asyncHandler(async (req, res) => {
-    const { orderStatus } = req.body;
+    const { status } = req.body;
     const order = await Order.findById(req.params.id);
     if (order) {
-      order.paymentStatus = orderStatus;
+      order.paymentStatus = status;
       const updatedOrder = await order.save();
       res.json(updatedOrder);
     } else {

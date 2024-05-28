@@ -12,6 +12,11 @@ class UserController {
   registerUser = asyncHandler(async (req, res) => {
     const { name, password, phoneNumber, gender, email } = req.body;
     const user = await User.findOne({ $or: [{ email }, { name }] });
+    if (!name || !password || !phoneNumber || !gender || !email) {
+      res.status(404);
+      throw new Error("Vui lòng điền đầy đủ các trường!");
+    }
+
     if (!user) {
       var salt = await bcrypt.genSalt(10);
       var hashPassword = await bcrypt.hash(password, salt);
@@ -30,7 +35,6 @@ class UserController {
           name,
           email,
           name,
-          color,
           phoneNumber,
           gender,
           newUser: newUser.roleUser,
@@ -41,7 +45,7 @@ class UserController {
       }
     } else {
       res.status(404);
-      throw new Error("User has already existed!");
+      throw new Error("Người dùng đã tồn tại!");
     }
   });
 
@@ -84,6 +88,12 @@ class UserController {
     }
   });
 
+  //  [ GET - ROUTE: api/user/all ]
+  getAllUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.find({});
+    res.json(user);
+  });
+
   //  [PATCH - ROUTE: api/user/update]
   updateUser = asyncHandler(async (req, res) => {
     var user = await User.findById(req.user._id);
@@ -110,6 +120,20 @@ class UserController {
         }
       );
       res.json(updateUser);
+    } else {
+      res.status(404);
+      throw new Error("User does not exist!");
+    }
+  });
+
+  //  [ PATCH - ROUTE: api/user/role/:id]
+  updateRole = asyncHandler(async (req, res) => {
+    const { status } = req.body;
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.roleUser = status;
+      const updatedUser = await user.save();
+      res.json(updatedUser);
     } else {
       res.status(404);
       throw new Error("User does not exist!");

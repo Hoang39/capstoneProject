@@ -172,7 +172,7 @@ class ProductController {
     res.json(ans);
   });
 
-  //  [ GET - ROUTE: api/dish/:id ]
+  //  [ GET - ROUTE: api/product/:id ]
   getProductByID = asyncHandler(async (req, res) => {
     var product = await Product.findById(req.params.id);
     if (product) {
@@ -183,21 +183,22 @@ class ProductController {
     }
   });
 
-  //  [ PATCH - ROUTE: api/dish/:id ]
+  //  [ PATCH - ROUTE: api/:id ]
   updateProduct = asyncHandler(async (req, res) => {
     var pro = await Product.findById(req.params.id);
+    const data = JSON.parse(req.body.data)
     if (pro) {
       var newPro = await Product.findOneAndUpdate(
         { _id: req.params.id },
         {
-          name: req.body.name || pro.name,
-          price: req.body.price || pro.price,
-          image: req.body.image || pro.image,
-          offer: req.body.offer || pro.offer,
-          configTitle: req.body.configTitle || pro.configTitle,
-          configImage: req.body.configImage || pro.configImage,
-          configDesc: req.body.configDesc || pro.configDesc,
-          description: req.body.description || pro.description,
+          name: data.name || pro.name,
+          price: data.price || pro.price,
+          image: data.image || pro.image,
+          offer: data.offer || pro.offer,
+          configTitle: data.configTitle || pro.configTitle,
+          configImage: data.configImage || pro.configImage,
+          configDesc: data.configDesc || pro.configDesc,
+          description: data.description || pro.description,
         },
         {
           new: true,

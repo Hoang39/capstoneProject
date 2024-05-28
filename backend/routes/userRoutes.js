@@ -8,5 +8,7 @@ router.post("/auth", userController.authUser);
 
 router.patch("/update", authMiddlewares.protect, userController.updateUser);
 router.get("/", authMiddlewares.protect, userController.getUserProfile);
+router.get("/all", authMiddlewares.protect, authMiddlewares.isAdmin, userController.getAllUserProfile);
+router.patch("/role/:id", authMiddlewares.protect, authMiddlewares.isAdmin, userController.updateRole);
 
 module.exports = router;
