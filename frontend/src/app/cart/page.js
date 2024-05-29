@@ -14,6 +14,8 @@ import { createOrder } from "../api/orderApi";
 import Image from "next/image";
 
 import wishlist from "../../image/cart/wishlist.png";
+import Error from "@/components/error/error";
+import Footer from "@/components/footer/footer";
 
 export default function Cart() {
   const router = useRouter();
@@ -93,7 +95,7 @@ export default function Cart() {
     }
   };
 
-  return (
+  return localStorage.getItem("user-token") ? (
     <>
       <ReactNotifications />
       <ScrollButton />
@@ -106,12 +108,12 @@ export default function Cart() {
       </p>
 
       {listCart && listCart?.length ? (
-        <div className="my-2 mx-20 flex flex-col items-center">
+        <div className="max-[600px]:mx-6 my-2 mb-8 mx-20 flex flex-col items-center">
           <div className="overflow-y-auto h-160 flex flex-col gap-4">
             {listCart?.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-row justify-between border-b-2 border-gray-100 pt-8"
+                className="flex max-[600px]:flex-col flex-row justify-between border-b-2 border-gray-100 pt-8"
               >
                 <div className="flex flex-row gap-x-2 items-center">
                   <svg
@@ -132,12 +134,12 @@ export default function Cart() {
                     />
                   </svg>
                   <img
-                    className="w-32 h-32 rounded-lg"
+                    className="max-[600px]:w-16 max-[600px]:h-16 w-32 h-32 rounded-lg"
                     src={item?.image}
                     alt="list"
                   />
-                  <div className="flex flex-col gap-y-2 min-w-[320px]">
-                    <p className="text-primary_color">{item?.name}</p>
+                  <div className="flex flex-col gap-y-2 max-[600px]:min-w-[200px] min-w-[320px]">
+                    <p className="text-primary_color max-[600px]:line-clamp-1">{item?.name}</p>
                     <p className="text-sm text-primary_color">
                       {(
                         item?.price?.replace(/,/g, "") * item.quantity
@@ -152,7 +154,7 @@ export default function Cart() {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row gap-x-2 items-center ml-4">
+                <div className="flex flex-row gap-x-2 max-[600px]:justify-around items-center max-[600px]:ml-0 ml-4">
                   <button
                     onClick={() => {
                       if (item.quantity > 1) {
@@ -180,7 +182,7 @@ export default function Cart() {
                       />
                     </svg>
                   </button>
-                  <div className="m-auto rounded-2xl px-2 text-primary_color">
+                  <div className="rounded-2xl px-2 text-primary_color">
                     {item.quantity}
                   </div>
                   <button
@@ -213,7 +215,7 @@ export default function Cart() {
             ))}
           </div>
           <div className="flex flex-row gap-4 py-4">
-            <p className="font-semibold text-lg text-primary_color">
+            <p className="max-[600px]:hidden font-semibold text-lg text-primary_color">
               Phương thức thanh toán:
             </p>
             <input
@@ -273,6 +275,8 @@ export default function Cart() {
           </button>
         </div>
       )}
+
+      <Footer />
     </>
-  );
+  ) : <Error />;
 }

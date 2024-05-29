@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import ChatBotButton from "@/components/button/chatBotBtn";
 import ScrollButton from "@/components/button/scrollBtn";
@@ -137,6 +137,25 @@ export default function Home() {
     })();
   }, []);
 
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
+
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   return (
     <>
       <ScrollButton />
@@ -146,7 +165,7 @@ export default function Home() {
       <Slider />
 
       {/* new product */}
-      <div className="flex justify-around items-center mx-24 space-x-2">
+      <div className="max-[600px]:hidden flex justify-around items-center mx-24 space-x-2">
         {newProductItem.map((item, index) => (
           <Link href={item.link} key={index}>
             <Image src={item.img} alt="" />
@@ -155,14 +174,14 @@ export default function Home() {
       </div>
 
       {/* phone */}
-      <div className="mx-24 my-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 my-6 mt-16">
         <Link href="/cate/tecno">
           <Image src={phoneImg} alt="điện thoại nổi bật" />
         </Link>
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Điện thoại nổi bật" href="/cate/phone" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/iphone-15-series"
               className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
@@ -193,14 +212,14 @@ export default function Home() {
       </div>
 
       {/* watch */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <Link href="/cate/tecno">
           <Image src={watchImg} alt="đồng hồ nổi bật" />
         </Link>
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Đồng hồ thông minh" href="/cate/watch" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/watch"
               className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
@@ -209,18 +228,22 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <HomeSlider product={watch} />
+        {windowSize.innerWidth > 600 ? (
+          <HomeSlider product={watch} perView={5} />
+        ) : (
+          <HomeSlider product={watch} perView={2} />
+        )}
       </div>
 
       {/* laptop */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <Link href="/cate/msi-gaming">
           <Image src={laptopImg} alt="laptop nổi bật" />
         </Link>
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Laptop nổi bật" href="/cate/laptop" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/product/laptop-asus-tuf-gaming-f15-fx507zc4-hn074w-chinh-hang"
               className="text-xs text-primary_color p-2 bg-white rounded-lg border drop-shadow-sm hover:bg-primary_color hover:text-white"
@@ -257,14 +280,14 @@ export default function Home() {
       </div>
 
       {/* monitor */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <Link href="/product/man-hinh-msi-pro-mp243x-chinh-hang">
           <Image src={monitorImg} alt="màn hình" />
         </Link>
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Màn hình nổi bật" href="/cate/monitor" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/monitor"
               className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
@@ -273,18 +296,22 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <HomeSlider product={monitor} />
+        {windowSize.innerWidth > 600 ? (
+          <HomeSlider product={monitor} perView={5} />
+        ) : (
+          <HomeSlider product={monitor} perView={2} />
+        )}
       </div>
 
       {/* tv */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <Link href="/cate/tv-xiaomi">
           <Image src={tiviImg} alt="tv" />
         </Link>
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Smart TV nổi bật" href="/cate/tivi" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/tivi"
               className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
@@ -293,15 +320,19 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <HomeSlider product={tivi} />
+        {windowSize.innerWidth > 600 ? (
+          <HomeSlider product={tivi} perView={5} />
+        ) : (
+          <HomeSlider product={tivi} perView={2} />
+        )}
       </div>
 
       {/* tablet */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <div className="flex justify-between items-center my-4">
           <HomeTitle title="Tablet" href="/cate/tablet" />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/tablet"
               className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
@@ -310,18 +341,22 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <HomeSlider product={tablet} />
+        {windowSize.innerWidth > 600 ? (
+          <HomeSlider product={tablet} perView={5} />
+        ) : (
+          <HomeSlider product={tablet} perView={2} />
+        )}
       </div>
 
       {/* speakerHead */}
-      <div className="mx-24 mt-6 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <div className="flex justify-between items-center my-4">
           <HomeTitle
             title="Loa và tai nghe nổi bật"
             href="/cate/speakerHeadphone"
           />
 
-          <div className="flex justify-between space-x-2">
+          <div className="max-[600px]:hidden flex justify-between space-x-2">
             <Link
               href="/cate/speakerHeadphone"
               className="text-xs p-2 bg-primary_color rounded-lg border drop-shadow-sm"
@@ -330,11 +365,15 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <HomeSlider product={speakerHead} />
+        {windowSize.innerWidth > 600 ? (
+          <HomeSlider product={speakerHead} perView={5} />
+        ) : (
+          <HomeSlider product={speakerHead} perView={2} />
+        )}
       </div>
 
       {/* service */}
-      <div className="mx-24 mt-10 mt-16">
+      <div className="max-[600px]:mx-6 max-[600px]:mt-0 mx-24 mt-16">
         <div className="my-4">
           <HomeTitle title="Dịch vụ sửa chữa chính hãng" href="/cate/service" />
         </div>
@@ -342,7 +381,7 @@ export default function Home() {
       </div>
 
       {/* accessory */}
-      <div className="mx-24 my-6 space-y-6">
+      <div className="max-[600px]:hidden mx-24 my-6 space-y-6">
         <HomeTitle title="Phụ kiện" href="/cate/accessory" />
 
         <div className="p-6 rounded-lg drop-shadow-lg bg-white space-y-6">
@@ -368,7 +407,7 @@ export default function Home() {
       </div>
 
       {/* benefit */}
-      <div className="flex justify-around items-center py-4 mx-24">
+      <div className="max-[600px]:hidden flex justify-around items-center py-4 mx-24">
         {benefitItem.map((item, index) => (
           <div
             className="flex justify-around items-center space-x-2"
@@ -388,7 +427,7 @@ export default function Home() {
       </div>
 
       {/* register notification */}
-      <div className="flex justify-around items-center py-8 mx-24">
+      <div className="max-[600px]:hidden flex justify-around items-center py-8 mx-24">
         <Image src={image5} alt="Đăng ký nhận tin" />
         <div className="flex flex-col items-center space-y-1">
           <p className="text-primary_color font-bold">Đăng ký nhận tin</p>

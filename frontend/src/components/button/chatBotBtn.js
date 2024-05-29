@@ -67,7 +67,7 @@ const ChatBotButton = () => {
   }, [messages, isOpen]);
 
   return isOpen ? (
-    <div className="hidden sm:block fixed right-4 bottom-4 py-2 bg-white drop-shadow-lg rounded-xl border-2 border-blue-300 z-50 w-[280px] h-[400px]">
+    <div className="fixed max-[600px]:right-2 max-[600px]:left-2 right-4 bottom-4 py-2 bg-white drop-shadow-lg rounded-xl border-2 border-blue-300 z-50 max-[600px]:w-[94%] w-[280px] h-[400px]">
       <div
         onClick={() => setStateChat(!isOpen)}
         className="flex justify-between items-center border-b border-blue-300 pb-2 px-4"
@@ -118,7 +118,7 @@ const ChatBotButton = () => {
     </div>
   ) : (
     <div
-      className="hidden sm:block cursor-pointer animate-bounce fixed right-4 bottom-16 px-4 py-2 bg-white drop-shadow-lg rounded-3xl border-2 border-blue-300 z-50"
+      className="cursor-pointer animate-bounce fixed right-4 bottom-16 px-4 py-2 bg-white drop-shadow-lg rounded-3xl border-2 border-blue-300 z-50"
       onClick={() => {
         if (!isLogin) router.push("/login");
         else setStateChat(!isOpen);

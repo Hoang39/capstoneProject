@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const TabNav = [
   {
@@ -17,15 +17,12 @@ const TabNav = [
   {
     name: "Tài khoản",
     path: "/admin/account",
-  },
-  {
-    name: "Báo cáo",
-    path: "/admin/statistic",
-  },
+  }
 ];
 
 const AdminTab = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="w-[15%] border-r-2 h-screen bg-white drop-shadow-lg">
@@ -40,7 +37,7 @@ const AdminTab = () => {
           <div key={item.name} className="w-full">
             <Link
               href={item.path}
-              className="mx-2 px-8 py-1 text-sm font-medium tracking-tighter rounded-md hover:text-primary_color hover:translate-x-2 duration-300 text-sub_primary_color block"
+              className={`mx-2 px-8 py-1 text-sm font-medium tracking-tighter rounded-md hover:text-primary_color hover:translate-x-2 duration-300 block ${pathname === item.path ? "text-primary_color translate-x-2" : "text-sub_primary_color"}`}
             >
               {item.name}
             </Link>

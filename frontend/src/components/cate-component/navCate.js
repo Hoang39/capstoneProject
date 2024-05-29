@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const NavCate = ({ listCate }) => {
   return (
-    <div className="flex items-center mx-24 my-6 space-x-2">
+    <div className="max-[600px]:mx-6 flex items-center mx-24 my-6 space-x-2">
       <Link href="/" className="flex items-center space-x-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"

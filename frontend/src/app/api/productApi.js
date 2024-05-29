@@ -73,3 +73,22 @@ export const getProductById = async (id) => {
     return error.response.data;
   }
 };
+
+export const updateProduct = async (id, token, formValue) => {
+  try {
+    const res = await axios({
+      method: "patch",
+      url: `${host}/api/product/${id}`,
+      data: {
+        data: JSON.stringify(formValue)
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

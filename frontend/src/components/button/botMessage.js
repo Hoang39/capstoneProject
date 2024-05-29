@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 const handleMessage = (text) => {
   const split_text = text.split("`");
-  if (split_text.length < 2) return { message: "text", id: null };
+  if (split_text.length < 2) return { message: text, id: null };
   else
     return {
       message: text.replace(

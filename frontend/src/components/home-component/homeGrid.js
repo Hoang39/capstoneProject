@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const HomeGrid = ({ product }) => {
   return (
-    <div className="grid grid-cols-5 gap-2">
+    <div className="grid max-[600px]:grid-cols-2 grid-cols-5 gap-2">
       {product?.map((item, index) => (
         <Link
           href={`/product/${item.slug}`}

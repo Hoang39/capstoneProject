@@ -119,8 +119,8 @@ export default function Cate() {
       <FilterCate />
 
       {/* main content */}
-      <div className="mx-24 my-8">
-        <div className="grid grid-cols-5 gap-2">
+      <div className="max-[600px]:mx-6 mx-24 my-8">
+        <div className="grid max-[600px]:grid-cols-2 grid-cols-5 gap-2">
           {product.map((item, index) => (
             <Link
               href={`/product/${item.slug}`}

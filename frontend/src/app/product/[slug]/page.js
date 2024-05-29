@@ -38,7 +38,7 @@ export default function Product() {
   const handleCart = async () => {
     const token = localStorage.getItem("user-token");
     if (!token) {
-      router.push("/");
+      router.push("/login");
     } else {
       if (colorPicker) {
         addCart(
@@ -96,21 +96,21 @@ export default function Product() {
       <NavProd listCate={product} />
 
       {/* main content */}
-      <div className="mx-24 my-8">
+      <div className="max-[600px]:mx-6 mx-24 my-8">
         <p className="text-black font-bold text-xl pb-4">{product?.name}</p>
 
-        <div className="flex space-x-2">
+        <div className="flex max-[600px]:flex-col space-x-2">
           <ProductSlider product={product} />
 
-          <div className="w-1/2">
+          <div className="max-[600px]:w-full w-1/2">
             <div className="flex items-end gap-x-4">
-              <p className="text-2xl text-[#fd475a] font-bold">
+              <p className="max-[600px]:text-lg text-2xl text-[#fd475a] font-bold">
                 {product &&
                   (product.price[0] === "L"
                     ? product.price
                     : product.price + " đ")}
               </p>
-              <p className="text-base text-primary_color line-through italic">
+              <p className="max-[600px]:text-sm text-base text-primary_color line-through italic">
                 {product &&
                   product.price[0] !== "L" &&
                   (
@@ -118,7 +118,7 @@ export default function Product() {
                     2
                   ).toString() + " ₫"}
               </p>
-              <p className="text-sm text-primary_color italic">
+              <p className="max-[600px]:text-xs text-sm text-primary_color italic">
                 <span className="px-1">|</span> Giá Đã bao gồm 10% VAT
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function Product() {
               ))}
             </div>
           </div>
-          <div className="w-1/4 bg-white rounded-xl py-4 px-2">
+          <div className="max-[600px]:w-full max-[600px]:mt-2 w-1/4 bg-white rounded-xl py-4 px-2">
             <p className="text-black font-bold text-sm pb-4">
               {product?.configTitle}
             </p>
@@ -224,7 +224,7 @@ export default function Product() {
       </div>
 
       {/* description */}
-      <div className="mx-24 my-8">
+      <div className="max-[600px]:mx-6 mx-24 my-8">
         <div className="bg-white rounded py-4 px-4 text-sm">
           {product &&
             product.description &&
@@ -253,7 +253,7 @@ export default function Product() {
       </div>
 
       {/* similar product */}
-      <div className="mx-24 my-8">
+      <div className="max-[600px]:mx-6 mx-24 my-8">
         <div className="my-4">
           <HomeTitle title="Sản phẩm tương tự" href="/" />
         </div>
@@ -262,7 +262,7 @@ export default function Product() {
 
       {/* news */}
       {product && product.news && (
-        <div className="mx-24 my-8">
+        <div className="max-[600px]:mx-6 mx-24 my-8">
           <div className="my-4">
             <HomeTitle
               title={product && product.news && product.news.name}

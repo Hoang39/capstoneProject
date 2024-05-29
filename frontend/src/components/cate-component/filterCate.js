@@ -4,7 +4,7 @@ const FilterCate = () => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-around items-center mx-24 my-2 bg-white drop-shadow-xl rounded-lg relative z-20">
+    <div className="max-[600px]:hidden flex justify-around items-center mx-24 my-2 bg-white drop-shadow-xl rounded-lg relative z-20">
       <div className="group py-4">
         <p className="px-6 text-sm text-sub_primary_color font-bold">
           Lọc danh sách:

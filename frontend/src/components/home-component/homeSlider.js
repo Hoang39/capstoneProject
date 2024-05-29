@@ -4,9 +4,9 @@ import { useKeenSlider } from "keen-slider/react";
 import { useEffect } from "react";
 import "keen-slider/keen-slider.min.css";
 
-const HomeSlider = ({ product }) => {
+const HomeSlider = ({ product, perView }) => {
   const sliderOptions = {
-    slides: { perView: 5 },
+    slides: { perView: perView },
     loop: true,
   };
 
@@ -50,7 +50,7 @@ const HomeSlider = ({ product }) => {
   return (
     <div
       ref={sliderRef}
-      className="keen-slider p-2 bg-white rounded-lg drop-shadow"
+      className={`keen-slider p-2 bg-white rounded-lg drop-shadow`}
     >
       {product?.map((item, index) => (
         <Link

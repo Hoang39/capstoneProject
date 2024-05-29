@@ -22,7 +22,7 @@ const Input = ({ data, title, des, value, name }) => {
             onChange={handleChange}
             defaultValue={value}
             disabled={state}
-            className="w-5/6 appearance-none block w-full bg-white 
+            className="appearance-none block w-full bg-white 
                     text-gray-400 text-sm border-gray-200 border-b-2 py-2 px-2 
                     leading-tight focus:outline-none focus:border-gray-300 rounded"
             type="text"
@@ -33,7 +33,7 @@ const Input = ({ data, title, des, value, name }) => {
           <p className="text-sub_primary_color w-4/5 text-xs">{des}</p>
         </div>
 
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-[50%]">
           {state ? (
             <button
               onClick={() => {

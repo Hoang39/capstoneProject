@@ -72,15 +72,15 @@ export default function Login() {
   return (
     <>
       <ReactNotifications />
-      <div className="flex">
-        <div className="relative h-screen min-w-[60%] bg-gradient-to-b from-[#FFEACB]/80 to-[#FED085]/80">
+      <div className="flex max-[600px]:flex-col">
+        <div className="relative max-[600px]:h-[200px] h-screen min-w-[60%] bg-gradient-to-b from-[#FFEACB]/80 to-[#FED085]/80">
           <Image
             src={loginObj}
             alt=""
             className="w-1/2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           />
         </div>
-        <div className="mt-16 mx-16 w-full">
+        <div className="mt-16 max-[600px]:mx-0 max-[600px]:px-8 mx-16 w-full">
           <div className="flex items-center gap-x-4">
             <Image src={icon} alt="" width={40} />
             <div>
@@ -139,7 +139,7 @@ export default function Login() {
           <div className="flex justify-between text-xs text-black py-3">
             <p>
               Chưa có tài khoản?{" "}
-              <span className="cursor-pointer font-medium text-blue-500">
+              <span onClick={() => router.push("/signup")} className="cursor-pointer font-medium text-blue-500">
                 Đăng ký
               </span>
             </p>

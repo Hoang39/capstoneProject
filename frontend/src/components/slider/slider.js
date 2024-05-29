@@ -129,7 +129,7 @@ const Slider = () => {
   );
 
   return (
-    <div className="mx-24 my-6">
+    <div className="max-[600px]:hidden mx-24 my-6">
       <div ref={sliderRef} className="keen-slider">
         {sliderItem.map((item, index) => (
           <Link href={item.link} key={index}>

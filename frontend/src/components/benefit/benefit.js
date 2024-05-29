@@ -14,7 +14,7 @@ const benefitItem = [
 
 const Benefit = () => {
   return (
-    <div className="flex justify-around items-center py-4 mx-24">
+    <div className="max-[600px]:hidden flex justify-around items-center py-4 mx-24">
       {benefitItem.map((item, index) => (
         <div className="flex justify-around items-center space-x-2" key={index}>
           <Image src={item.img} alt={item.name} />

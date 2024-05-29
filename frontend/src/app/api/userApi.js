@@ -59,3 +59,36 @@ export const updateProfile = async (token, formValue) => {
     return error.response.data;
   }
 };
+
+
+export const getAllProfile = async (token) => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${host}/api/user/all`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const updateRole = async (token, status, userId) => {
+  try {
+    const res = await axios({
+      method: "patch",
+      url: `${host}/api/user/role/${userId}`,
+      data: {
+        status: status
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

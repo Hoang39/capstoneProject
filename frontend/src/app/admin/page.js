@@ -2,6 +2,9 @@
 
 import AdminTab from "@/components/admin/adminTab";
 import Link from "next/link";
+import Error from "@/components/error/error";
+import { useState, useEffect } from "react";
+import { getProfile } from "../api/userApi";
 
 const TabNav = [
   {
@@ -19,15 +22,23 @@ const TabNav = [
   {
     name: "Tài khoản",
     path: "/admin/account",
-  },
-  {
-    name: "Báo cáo",
-    path: "/admin/statistic",
-  },
+  }
 ];
 
 export default function Admin() {
-  return (
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const token = localStorage.getItem("user-token");
+      if (token) {
+        const getUserInfo = await getProfile(token);
+        setUserInfo(getUserInfo);
+      }
+    })();
+  }, []);
+
+  return localStorage.getItem("user-token") && userInfo?.roleUser === "admin" ? (
     <div className="flex flex-row">
       <AdminTab />
 
@@ -77,5 +88,5 @@ export default function Admin() {
         </div>
       </div>
     </div>
-  );
+  ) : <Error />;
 }
