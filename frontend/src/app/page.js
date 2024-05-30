@@ -137,25 +137,6 @@ export default function Home() {
     })();
   }, []);
 
-  function getWindowSize() {
-    const { innerWidth, innerHeight } = window;
-    return { innerWidth, innerHeight };
-  }
-
-  const [windowSize, setWindowSize] = useState(getWindowSize());
-
-  useEffect(() => {
-    function handleWindowResize() {
-      setWindowSize(getWindowSize());
-    }
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
   return (
     <>
       <ScrollButton />
@@ -228,11 +209,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        {windowSize.innerWidth > 600 ? (
-          <HomeSlider product={watch} perView={5} />
-        ) : (
-          <HomeSlider product={watch} perView={2} />
-        )}
+        <HomeSlider product={watch} perView={2} />
       </div>
 
       {/* laptop */}
@@ -296,11 +273,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        {windowSize.innerWidth > 600 ? (
-          <HomeSlider product={monitor} perView={5} />
-        ) : (
-          <HomeSlider product={monitor} perView={2} />
-        )}
+        <HomeSlider product={monitor} perView={2} />
       </div>
 
       {/* tv */}
@@ -320,11 +293,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        {windowSize.innerWidth > 600 ? (
-          <HomeSlider product={tivi} perView={5} />
-        ) : (
-          <HomeSlider product={tivi} perView={2} />
-        )}
+        <HomeSlider product={tivi} perView={2} />
       </div>
 
       {/* tablet */}
@@ -341,11 +310,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        {windowSize.innerWidth > 600 ? (
-          <HomeSlider product={tablet} perView={5} />
-        ) : (
-          <HomeSlider product={tablet} perView={2} />
-        )}
+        <HomeSlider product={tablet} perView={2} />
       </div>
 
       {/* speakerHead */}
@@ -365,11 +330,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        {windowSize.innerWidth > 600 ? (
-          <HomeSlider product={speakerHead} perView={5} />
-        ) : (
-          <HomeSlider product={speakerHead} perView={2} />
-        )}
+        <HomeSlider product={speakerHead} perView={2} />
       </div>
 
       {/* service */}

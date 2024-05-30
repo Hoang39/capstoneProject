@@ -3,10 +3,14 @@ import Image from "next/image";
 import img1 from "../../../src/image/footer/img1.jpg";
 import img2 from "../../../src/image/footer/img2.jpg";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
-  const [token, setToken] = useState(localStorage.getItem("user-token"));
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("user-token"));
+  }, [])
   
   return (
     <>
