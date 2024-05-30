@@ -24,14 +24,17 @@ export default function AdminAccount() {
     { value: "customer", label: "Khách hàng" }
   ];
 
+  const [token, setToken] = useState(null);
+
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      const listProducts = await getAllProfile(token);
+      const token_ = localStorage.getItem("user-token");
+      setToken(token_);
+      const listProducts = await getAllProfile(token_);
       setProductAll(listProducts);
       setProducts(listProducts.slice(0, 10));
       setProductLength(listProducts?.length);
-      setUser(await getProfile(token))
+      setUser(await getProfile(token_))
     })();
   }, []);
 
@@ -41,7 +44,7 @@ export default function AdminAccount() {
 
   const router = useRouter();
 
-  return localStorage.getItem("user-token") ? (
+  return token ? (
     <div className="flex flex-row">
       <AdminTab />
 

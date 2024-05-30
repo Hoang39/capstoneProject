@@ -29,10 +29,13 @@ export default function AdminOrder() {
     { value: "canceled", label: "Hủy" },
   ];
 
+  const [token, setToken] = useState(null);
+
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      const listProducts = await getAllOrder(token);
+      const token_ = localStorage.getItem("user-token");
+      setToken(token_)
+      const listProducts = await getAllOrder(token_);
       setProductAll(listProducts);
       setProducts(listProducts.slice(0, 10));
       setProductLength(listProducts?.length);
@@ -45,7 +48,7 @@ export default function AdminOrder() {
 
   const router = useRouter();
 
-  return localStorage.getItem("user-token") ? (
+  return token ? (
     <div className="flex flex-row">
       <AdminTab />
 

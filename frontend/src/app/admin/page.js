@@ -27,18 +27,20 @@ const TabNav = [
 
 export default function Admin() {
   const [userInfo, setUserInfo] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      if (token) {
-        const getUserInfo = await getProfile(token);
+      const token_ = localStorage.getItem("user-token");
+      if (token_) {
+        setToken(token_);
+        const getUserInfo = await getProfile(token_);
         setUserInfo(getUserInfo);
       }
     })();
   }, []);
 
-  return localStorage.getItem("user-token") && userInfo?.roleUser === "admin" ? (
+  return token && userInfo?.roleUser === "admin" ? (
     <div className="flex flex-row">
       <AdminTab />
 

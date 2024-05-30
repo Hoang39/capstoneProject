@@ -95,7 +95,7 @@ export default function Cart() {
     }
   };
 
-  return localStorage.getItem("user-token") ? (
+  return token ? (
     <>
       <ReactNotifications />
       <ScrollButton />

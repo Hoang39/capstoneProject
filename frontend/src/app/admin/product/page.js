@@ -43,10 +43,13 @@ export default function AdminProduct() {
     { value: "accessory", label: "Phụ kiện" },
   ];
 
+  const [token, setToken] = useState(null);
+
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      const listProducts = await getAllProducts(token);
+      const token_ = localStorage.getItem("user-token");
+      setToken(token_)
+      const listProducts = await getAllProducts(token_);
       setProductAll(listProducts);
       setProducts(listProducts.slice(0, 10));
       setProductLength(listProducts?.length);
@@ -88,7 +91,7 @@ export default function AdminProduct() {
 
   const router = useRouter();
 
-  return localStorage.getItem("user-token") ? (
+  return token ? (
     <div className="flex flex-row">
       <AdminTab />
 

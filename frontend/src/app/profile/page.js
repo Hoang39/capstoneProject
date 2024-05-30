@@ -29,20 +29,21 @@ export default function Profile() {
 
   const [userInfo, setUserInfo] = useState(null);
   const [orders, setOrders] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("user-token");
-      if (token) {
-        const getUserInfo = await getProfile(token);
+      const userToken = localStorage.getItem("user-token");
+      if (userToken) {
+        setToken(userToken);
+        const getUserInfo = await getProfile(userToken);
         setUserInfo(getUserInfo);
-        console.log("===> ", await getOrder(token));
-        setOrders(await getOrder(token));
+        setOrders(await getOrder(userToken));
       }
     })();
   }, []);
 
-  return localStorage.getItem("user-token") ? (
+  return token ? (
     <>
       <ScrollButton />
       <ChatBotButton />
