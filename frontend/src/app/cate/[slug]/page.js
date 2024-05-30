@@ -21,29 +21,29 @@ import {
   getAllCateArr,
 } from "@/app/api/productApi";
 
-const getCateSequence = (pathname, cates) => {
-  let res = [];
-  while (true) {
-    const item = res.length
-      ? cates.filter((e) => e.slug === res[res.length - 1].parent.slug)[0]
-      : cates.filter((e) => e.slug === pathname)[0];
-    res.push(item);
-
-    if (!item.parent) break;
-  }
-
-  return res;
-};
-
-const getCateNameFromCurrCate = (currCate, cateArr) => {
-  let res = cateArr.filter((e) => e.slug === currCate)[0];
-  while (res.parent) {
-    res = cateArr.filter((e) => e.slug === res.parent.slug)[0];
-  }
-  return res;
-};
-
 export default function Cate() {
+  const getCateSequence = (pathname, cates) => {
+    let res = [];
+    while (true) {
+      const item = res.length
+        ? cates.filter((e) => e.slug === res[res.length - 1].parent.slug)[0]
+        : cates.filter((e) => e.slug === pathname)[0];
+      res.push(item);
+  
+      if (!item.parent) break;
+    }
+  
+    return res;
+  };
+  
+  const getCateNameFromCurrCate = (currCate, cateArr) => {
+    let res = cateArr.filter((e) => e.slug === currCate)[0];
+    while (res.parent) {
+      res = cateArr.filter((e) => e.slug === res.parent.slug)[0];
+    }
+    return res;
+  };
+  
   const searchParams = useSearchParams();
   let _sort = searchParams.get("_sort");
   if (_sort !== "asc" && _sort !== "des") _sort = "";
