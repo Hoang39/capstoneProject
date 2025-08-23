@@ -16,6 +16,7 @@ export default function AdminAccount() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedValue, setSelectedValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [openModalAdd, setOpenModalAdd] = useState(false);
   const [res, setRes] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -50,10 +51,11 @@ export default function AdminAccount() {
 
       <div className="bg-primary_color/10 h-screen w-[85%] px-20 pt-10">
         <div className="bg-white drop-shadow-lg rounded p-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-x-4">
             <p className="font-bold font-primary text-primary_color text-xl py-4 border-b-2 px-4">
               Tài khoản
             </p>
+            <div onClick={() => setOpenModalAdd(true)} className="px-4 py-2 text-white bg-blue-500 rounded-xl text-sm cursor-pointer">Thêm tài khoản</div>
           </div>
           <div className="grid grid-cols-4 text-sm border-b-2 py-2">
             <p className="px-4 font-semibold text-black py-3">ID</p>
@@ -61,7 +63,7 @@ export default function AdminAccount() {
             <p className="px-4 font-semibold text-gray-800 py-3">Email</p>
             <p className="px-4 font-semibold text-primary_color py-3">Phone</p>
           </div>
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[360px] overflow-y-auto">
             {products?.map((item) => (
               <div
                 key={item._id}
@@ -151,6 +153,118 @@ export default function AdminAccount() {
           <div
             className="uppercase text-md font-semibold text-sub_primary_color text-center p-4 rounded hover:text-blue-500 cursor-pointer"
             onClick={() => setOpenModal(!openModal)}
+          >
+            Back
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={openModalAdd}
+        onClose={() => setOpenModalAdd(!openModalAdd)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-1/2 bg-white drop-shadow-lg p-8">
+          <div className="flex flex-col mb-4 text-primary_color">
+              <p>Đăng ký tài khoản</p>
+            <div className="flex gap-x-2 items-center my-8">
+            <form className="w-full">
+              <div className="relative z-0 w-full mb-3 group">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 appearance-none dark:text-black dark:border-gray-400 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="email"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Tên đăng nhập
+                </label>
+              </div>
+              <div className="relative z-0 w-full mb-3 group">
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 appearance-none dark:text-black dark:border-gray-400 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="password"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Mật khẩu
+                </label>
+              </div>
+              <div className="relative z-0 w-full mb-3 group">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 appearance-none dark:text-black dark:border-gray-400 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="name"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Tên người dùng
+                </label>
+              </div>
+              <div className="relative z-0 w-full mb-3 group">
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 appearance-none dark:text-black dark:border-gray-400 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="phoneNumber"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Số điện thoại
+                </label>
+              </div>
+              <div className="relative z-0 w-full mb-8 group">
+                <input
+                  type="text"
+                  name="gender"
+                  id="gender"
+                  className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 appearance-none dark:text-black dark:border-gray-400 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="gender"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Giới tính
+                </label>
+              </div>
+            </form>
+            </div>
+          </div>
+
+          <div>
+            <button
+              className="block bg-teal-400 hover:bg-teal-600 text-white uppercase text-lg mx-auto p-2 rounded"
+              type="submit"
+            >
+              Update
+            </button>
+          </div>
+          <div
+            className="uppercase text-md font-semibold text-sub_primary_color text-center p-4 rounded hover:text-blue-500 cursor-pointer"
+            onClick={() => setOpenModalAdd(!openModalAdd)}
           >
             Back
           </div>

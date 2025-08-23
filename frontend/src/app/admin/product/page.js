@@ -22,6 +22,7 @@ export default function AdminProduct() {
   const [imgAdd, setImgAdd] = useState(null);
   const [openModalDlt, setOpenModalDlt] = useState(false);
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [openModalAddProduct, setOpenModalAddProduct] = useState(false);
   const [formValue, setformValue] = useState({
     name: "",
     price: "",
@@ -98,9 +99,12 @@ export default function AdminProduct() {
       <div className="bg-primary_color/10 h-screen w-[85%] px-20 pt-10">
         <div className="bg-white drop-shadow-lg rounded p-8">
           <div className="flex items-center justify-between">
+            <div className="flex items-center gap-x-4">
             <p className="font-bold font-primary text-primary_color text-xl py-4 border-b-2 px-4">
               Sản phẩm
             </p>
+            <div onClick={() => setOpenModalAddProduct(true)} className="px-4 py-2 text-white bg-blue-500 rounded-xl text-sm cursor-pointer">Thêm sản phẩm</div>
+            </div>
             <div className="flex gap-x-2 items-center">
               <p className="text-gray-800 text-sm">Lọc danh mục: </p>
               <div>
@@ -124,7 +128,7 @@ export default function AdminProduct() {
             <p className="px-4 font-semibold text-primary_color py-3">Name</p>
             <p className="px-4 font-semibold text-gray-800 py-3">Price</p>
           </div>
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[360px] overflow-y-auto">
             {products?.map((item) => (
               <div
                 key={item._id}
@@ -355,6 +359,148 @@ export default function AdminProduct() {
             >
               Cancel
             </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={openModalAddProduct}
+        onClose={() => setOpenModalAddProduct(!openModalAddProduct)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div className="absolute h-[540px] overflow-y-auto top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-1/2 bg-white drop-shadow-lg p-8">
+          <div className="flex flex-col mb-4 text-primary_color">
+            <label
+              className="mb-2 font-bold text-lg text-gray-900"
+              htmlFor="name"
+            >
+              Name
+            </label>
+            <input
+              onChange={handleChangeText}
+              className="border py-2 px-3"
+              type="text"
+              name="name"
+              id="name"
+            ></input>
+          </div>
+
+          <div className="flex flex-col mb-4 text-primary_color">
+            <label
+              className="mb-2 font-bold text-lg text-gray-900"
+              htmlFor="name"
+            >
+              Category
+            </label>
+            <select
+                  className="text-sm text-primary_color border px-2 py-3"
+                >
+                    <option key="" value="">
+                      
+                    </option>
+                </select>
+          </div>
+
+          {/* image */}
+          <div className="flex flex-col mb-2">
+            <label
+              className="mb-2 font-bold text-lg text-gray-900"
+              htmlFor="image"
+            >
+              Image
+            </label>
+            {/* <input
+              onChange={handleChangeText}
+              className="border py-2 px-3 text-grey-800"
+              type="text"
+              name="imageUrl"
+              id="image"
+              defaultValue={res && res.imageUrl}
+            /> */}
+            <div className="w-full">
+              <div className="flex overflow-x-auto gap-x-4">
+                {[]?.image?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border-2 border-green-200 rounded-lg relative"
+                  >
+                    <img src={item} alt="" className="object-cover min-w-[80px] max-w-[80px]" />
+                    <img
+                      src="https://icons.veryicon.com/png/o/miscellaneous/linear-common-flat-foundation-icon/trash-can-deletion.png"
+                      alt=""
+                      className="absolute right-0 top-0 h-4 w-4 cursor-pointer "
+                      onClick={() => {
+                        setImgDlt(item);
+                        setOpenModalDlt(true);
+                      }}
+                    />
+                  </div>
+                ))}
+                <div className="border-2 border-green-200 rounded-lg cursor-pointer">
+                  <img
+                    src="https://cdn0.iconfinder.com/data/icons/circles-2/100/sign-square-dashed-plus-512.png"
+                    alt=""
+                    className="object-cover min-w-[80px] max-w-[80px]"
+                    onClick={() => setOpenModalAddProduct(!openModalAddProduct)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* price */}
+          <div className="flex flex-col mb-4 text-primary_color">
+            <label
+              className="mb-2 font-bold text-lg text-gray-900"
+              htmlFor="price"
+            >
+              Price
+            </label>
+            <input
+              onChange={handleChangeText}
+              className="border py-2 px-3"
+              type="text"
+              name="price"
+              id="price"
+            ></input>
+          </div>
+
+          {/* price */}
+          <div className="flex flex-col mb-4 text-primary_color">
+            <label
+              className="mb-2 font-bold text-lg text-gray-900"
+              htmlFor="price"
+            >
+              Description
+            </label>
+            <textarea
+              onChange={handleChangeText}
+              className="border py-2 px-3"
+              type="text"
+              name="description"
+              id="description"
+            ></textarea>
+          </div>
+
+          <div>
+            <button
+              className="block bg-teal-400 hover:bg-teal-600 text-white uppercase text-lg mx-auto p-2 rounded"
+              type="submit"
+              onClick={async () => {
+                const token = localStorage.getItem("user-token");
+                setOpenModalAddProduct(!openModalAddProduct);
+                router.push("/admin");
+              }}
+            >
+              Update
+            </button>
+          </div>
+          <div
+            className="uppercase text-md font-semibold text-sub_primary_color text-center p-4 rounded hover:text-blue-500 cursor-pointer"
+            onClick={() => setOpenModalAddProduct(!openModalAddProduct)}
+          >
+            Back
           </div>
         </div>
       </Modal>

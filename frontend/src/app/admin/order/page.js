@@ -65,7 +65,7 @@ export default function AdminOrder() {
             <p className="px-4 font-semibold text-gray-800 py-3">Price</p>
             <p className="px-4 font-semibold text-primary_color py-3">Status</p>
           </div>
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[360px] overflow-y-auto">
             {products?.map((item) => (
               <div
                 key={item._id}
