@@ -1,0 +1,19 @@
+[build]
+  base = "frontend"  # Build from the frontend folder
+  command = "npm run build"  # Run Next.js build to generate .next
+  publish = "frontend/.next"  # Publish the .next folder (generated during build)
+  functions = "backend/netlify/functions"  # Path to backend serverless functions
+
+[functions]
+  external_node_modules = ["express"]  # Bundle Express for serverless functions
+  node_bundler = "esbuild"  # Use esbuild for faster bundling
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Example for a scheduled function (for node-cron migration)
+[functions.scheduled-task]
+  schedule = "0 * * * *"  # Runs hourly; adjust as needed
