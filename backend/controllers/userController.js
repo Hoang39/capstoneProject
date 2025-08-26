@@ -51,8 +51,9 @@ class UserController {
 
   //  [ POST - ROUTE: api/user/auth ]
   authUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, type, name } = req.body;
     const user = await User.findOne({ email });
+
     if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user._id,
@@ -63,6 +64,30 @@ class UserController {
         roleUser: user.roleUser,
         token: generateToken(user._id),
       });
+    } else if (!user && type === "oauth") {
+      var salt = await bcrypt.genSalt(10);
+      var hashPassword = await bcrypt.hash(password, salt);
+
+      const newUser = await User.create({
+        name,
+        email,
+        phoneNumber: "",
+        gender: "",
+        password: hashPassword,
+        roleUser: "customer",
+      });
+      if (newUser) {
+        await Cart.create({ user: newUser._id, orderList: [] });
+        res.json({
+          _id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          phoneNumber: newUser.phoneNumber,
+          gender: newUser.gender,
+          roleUser: newUser.roleUser,
+          token: generateToken(newUser._id),
+        });
+      }
     } else {
       res.status(401);
       throw new Error("Invalid UserName or Password");
