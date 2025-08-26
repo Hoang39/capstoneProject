@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:8000";
+const host = process.env.API_URL || "http://localhost:8000";
 
 export const getCart = async (token) => {
   try {
@@ -24,7 +24,7 @@ export const updateCart = async (token, formValue) => {
       method: "patch",
       url: `${host}/api/cart/update`,
       data: {
-        orderList: JSON.stringify(formValue)
+        orderList: JSON.stringify(formValue),
       },
       headers: {
         Authorization: `Bearer ${token}`,

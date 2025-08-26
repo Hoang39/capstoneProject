@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:8000";
+const host = process.env.API_URL || "http://localhost:8000";
 
 export const sendMessage = async (token, prompt) => {
   try {

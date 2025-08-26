@@ -6,7 +6,17 @@ const nextConfig = {
       "cdn1.hoanghamobile.com",
       "hoanghamobile.com",
       "admin.hoanghamobile.com",
+      "avatars.githubusercontent.com",
     ],
+  },
+
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "main--emobileshop.netlify.app",
+        "emobileshop.netlify.app",
+      ],
+    },
   },
 };
 
